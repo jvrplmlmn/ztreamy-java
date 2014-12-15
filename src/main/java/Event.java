@@ -1,5 +1,7 @@
 package org.ztreamy;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public class Event {
     private byte[] body;
     private Map<String, String> extraHeaders;
 
+    private Charset charsetUTF8 = Charset.forName("UTF-8");
     private static SimpleDateFormat rfc3339Format =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
@@ -47,7 +50,31 @@ public class Event {
         return UUID.randomUUID().toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println("Hello org.ztreamy.Event!");
+    public void setBody(byte[] body) {
+        this.body = body;
     }
+
+    public void setBody(String bodyAsString) {
+        this.body = bodyAsString.getBytes(charsetUTF8);
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Hello org.ztreamy.Event!");
+
+        // Create an Event object
+        Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
+
+        // Create a buffer and write the Event-Id header
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("Event-Id");
+        buffer.append(": ");
+        buffer.append(event.eventId);
+        buffer.append("\r\n");
+
+        byte[] header = buffer.toString().getBytes(event.charsetUTF8);
+
+        // Print the header
+        System.out.write(header);
+    }
+
 }
