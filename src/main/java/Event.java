@@ -59,22 +59,20 @@ public class Event {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello org.ztreamy.Event!");
-
         // Create an Event object
         Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
 
-        // Create a buffer and write the Event-Id header
+        // Create a buffer and write the basic headers
         StringBuffer buffer = new StringBuffer();
-        buffer.append("Event-Id");
-        buffer.append(": ");
-        buffer.append(event.eventId);
-        buffer.append("\r\n");
+        buffer.append("Event-Id: " + event.eventId + "\r\n");
+        buffer.append("Source-Id: " + event.sourceId + "\r\n");
+        buffer.append("Syntax: " + event.syntax + "\r\n");
+        buffer.append("Application-Id: " + event.applicationId + "\r\n");
 
-        byte[] header = buffer.toString().getBytes(event.charsetUTF8);
+        byte[] headers = buffer.toString().getBytes(event.charsetUTF8);
 
-        // Print the header
-        System.out.write(header);
+        // Print the headers
+        System.out.write(headers);
     }
 
 }
