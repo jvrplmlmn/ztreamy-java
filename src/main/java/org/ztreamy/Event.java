@@ -57,30 +57,23 @@ public class Event {
         this.body = bodyAsString.getBytes(charsetUTF8);
     }
 
+    public byte[] serialize() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("Event-Id: " + eventId + "\r\n");
+        buffer.append("Source-Id: " + sourceId + "\r\n");
+        buffer.append("Syntax: " + syntax + "\r\n");
+        buffer.append("Application-Id: " + applicationId + "\r\n");
+        buffer.append("Timestamp: " + timestamp + "\r\n");
+        buffer.append("Body-Length: " + String.valueOf(body.length) + "\r\n");
+        byte[] headers = buffer.toString().getBytes(charsetUTF8);
+        return headers;
+    }
+
     public static void main(String[] args) throws IOException {
         // Create an Event object
         Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
-
-        // Create a buffer and write the basic headers
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("Event-Id: " + event.eventId + "\r\n");
-        buffer.append("Source-Id: " + event.sourceId + "\r\n");
-        buffer.append("Syntax: " + event.syntax + "\r\n");
-        buffer.append("Application-Id: " + event.applicationId + "\r\n");
-
-        byte[] headers = buffer.toString().getBytes(event.charsetUTF8);
-
-        // Print the headers
-        System.out.write(headers);
-
-        // Body
         event.setBody("Test body");
-        StringBuffer bodyBuffer = new StringBuffer();
-        bodyBuffer.append("Body-Length: " + String.valueOf(event.body.length) + "\r\n");
-
-        byte[] body = bodyBuffer.toString().getBytes(event.charsetUTF8);
-
-        System.out.write(body);
+        System.out.write(event.serialize());
         System.out.write(event.body);
     }
 
