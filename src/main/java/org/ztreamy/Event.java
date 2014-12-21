@@ -66,6 +66,9 @@ public class Event {
             serializeHeader(buffer, "Application-Id", applicationId);
         }
         serializeHeader(buffer, "Timestamp", timestamp);
+        for (Map.Entry<String, String> entry: extraHeaders.entrySet()) {
+            serializeHeader(buffer, entry.getKey(), entry.getValue());
+        }
         serializeHeader(buffer, "Body-Length", String.valueOf(body.length));
         // Delimiter of headers and body
         buffer.append("\r\n");
