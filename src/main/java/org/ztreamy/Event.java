@@ -72,6 +72,16 @@ public class Event {
 
         // Print the headers
         System.out.write(headers);
+
+        // Body
+        event.setBody("Test body");
+        StringBuffer bodyBuffer = new StringBuffer();
+        bodyBuffer.append("Body-Length: " + String.valueOf(event.body.length) + "\r\n");
+
+        byte[] body = bodyBuffer.toString().getBytes(event.charsetUTF8);
+
+        System.out.write(body);
+        System.out.write(event.body);
     }
 
 }
