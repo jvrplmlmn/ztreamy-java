@@ -62,7 +62,9 @@ public class Event {
         buffer.append("Event-Id: " + eventId + "\r\n");
         buffer.append("Source-Id: " + sourceId + "\r\n");
         buffer.append("Syntax: " + syntax + "\r\n");
-        buffer.append("Application-Id: " + applicationId + "\r\n");
+        if (applicationId != null) {
+            buffer.append("Application-Id: " + applicationId + "\r\n");
+        }
         buffer.append("Timestamp: " + timestamp + "\r\n");
         buffer.append("Body-Length: " + String.valueOf(body.length) + "\r\n");
         byte[] headers = buffer.toString().getBytes(charsetUTF8);
