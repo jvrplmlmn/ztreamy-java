@@ -73,7 +73,7 @@ public class Event {
         // Delimiter of headers and body
         buffer.append("\r\n");
         byte[] headers = buffer.toString().getBytes(charsetUTF8);
-        return headers;
+        return concatenate(headers, body);
     }
 
     public static void serializeHeader(StringBuffer buffer, String key, String value) {
@@ -83,12 +83,18 @@ public class Event {
         buffer.append("\r\n");
     }
 
+    private static byte[] concatenate(byte[] first, byte[] second) {
+        byte[] dest = new byte[first.length + second.length];
+        System.arraycopy(first, 0, dest, 0, first.length);
+        System.arraycopy(second, 0, dest, first.length, second.length);
+        return dest;
+    }
+
     public static void main(String[] args) throws IOException {
         // Create an Event object
         Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
         event.setBody("Test body");
         System.out.write(event.serialize());
-        System.out.write(event.body);
     }
 
 }
