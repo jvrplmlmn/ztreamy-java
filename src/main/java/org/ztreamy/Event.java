@@ -43,7 +43,6 @@ public class Event {
 
     public static String createTimestamp() {
         return rfc3339Format.format(new Date());
-
     }
 
     public static String createUUID() {
