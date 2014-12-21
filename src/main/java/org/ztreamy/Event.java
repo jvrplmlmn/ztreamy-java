@@ -67,6 +67,7 @@ public class Event {
         }
         buffer.append("Timestamp: " + timestamp + "\r\n");
         buffer.append("Body-Length: " + String.valueOf(body.length) + "\r\n");
+        buffer.append("\r\n");
         byte[] headers = buffer.toString().getBytes(charsetUTF8);
         return headers;
     }
@@ -76,7 +77,6 @@ public class Event {
         Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
         event.setBody("Test body");
         System.out.write(event.serialize());
-        System.out.write("\r\n".getBytes(event.charsetUTF8));
         System.out.write(event.body);
     }
 
