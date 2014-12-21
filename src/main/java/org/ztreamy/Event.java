@@ -58,18 +58,26 @@ public class Event {
     }
 
     public byte[] serialize() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("Event-Id: " + eventId + "\r\n");
-        buffer.append("Source-Id: " + sourceId + "\r\n");
-        buffer.append("Syntax: " + syntax + "\r\n");
+        StringBuffer buffer = new StringBuffer();;
+        serializeHeader(buffer, "Event-Id", eventId);
+        serializeHeader(buffer, "Source-Id", sourceId);
+        serializeHeader(buffer, "Syntax", syntax);
         if (applicationId != null) {
-            buffer.append("Application-Id: " + applicationId + "\r\n");
+            serializeHeader(buffer, "Application-Id", applicationId);
         }
-        buffer.append("Timestamp: " + timestamp + "\r\n");
-        buffer.append("Body-Length: " + String.valueOf(body.length) + "\r\n");
+        serializeHeader(buffer, "Timestamp", timestamp);
+        serializeHeader(buffer, "Body-Length", String.valueOf(body.length));
+        // Delimiter of headers and body
         buffer.append("\r\n");
         byte[] headers = buffer.toString().getBytes(charsetUTF8);
         return headers;
+    }
+
+    public static void serializeHeader(StringBuffer buffer, String key, String value) {
+        buffer.append(key);
+        buffer.append(": ");
+        buffer.append(value);
+        buffer.append("\r\n");
     }
 
     public static void main(String[] args) throws IOException {
