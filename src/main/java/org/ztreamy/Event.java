@@ -74,6 +74,7 @@ public class Event {
         Event event = new Event(createUUID(), "text/plain", "ztreamy-java-test");
         event.setBody("Test body");
         System.out.write(event.serialize());
+        System.out.write("\r\n".getBytes(event.charsetUTF8));
         System.out.write(event.body);
     }
 
