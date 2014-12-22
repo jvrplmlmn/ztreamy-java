@@ -10,6 +10,7 @@
 
     <build>
         <plugins>
+            <!-- Include a META-INF/MANIFEST.MF file which specifies the main class and the full class path -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -17,6 +18,10 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <!--
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            -->
                             <mainClass>org.ztreamy.Publisher</mainClass>
                         </manifest>
                     </archive>
