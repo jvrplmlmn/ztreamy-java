@@ -13,16 +13,22 @@ public class Publisher {
         this.serverURL = serverURL;
     }
 
-    public int publish(Event event) throws IOException{
+    public int publish(Event[] events) throws IOException{
         HttpURLConnection con = (HttpURLConnection) serverURL.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/ztreamy-event");
         con.setDoOutput(true);
         OutputStream out = con.getOutputStream();
-        byte[] data = event.serialize();
-        out.write(data);
+        for (Event event: events) {
+            byte[] data = event.serialize();
+            out.write(data);
+        }
         out.close();
         return con.getResponseCode();
+    }
+
+    public int publish(Event event) throws IOException {
+        return publish(new Event[] {event});
     }
 
     public static void main(String[] args) throws IOException {
