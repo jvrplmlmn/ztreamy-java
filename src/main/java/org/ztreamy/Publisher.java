@@ -42,17 +42,24 @@ public class Publisher {
         // Publisher
         Publisher publisher = new Publisher(new URL(args[0]));
 
-        // Event
+        // All the events have the same Source-Id
         String sourceID = Event.createUUID();
-        Event event = new Event(sourceID, "text/plain", "ztreamy-java-test");
 
-        // Publish event and process the result
-        int result = publisher.publish(event);
-        if (result == 200) {
-            System.out.println("An event has just been sent to the server");
-        } else {
-            System.out.println("The server responded with error " + result);
+        // Publish N events
+        int numEvents = Integer.parseInt(args[1]);
+        for (int i = 0; i < numEvents; i++) {
+            Event event = new Event(sourceID, "text/plain", "ztreamy-java-test");
+            // Publish event
+            int result = publisher.publish(event);
+            // Process the result
+            if (result == 200) {
+                System.out.println("An event has just been sent to the server");
+            } else {
+                System.out.println("The server responded with error " + result);
+
+            }
 
         }
+
     }
 }
