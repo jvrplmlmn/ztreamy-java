@@ -33,9 +33,9 @@ public class Publisher {
 
     public static void main(String[] args) throws IOException {
         // Check arguments
-        if (args.length < 1 || args.length > 2) {
+        if (args.length < 2 || args.length > 3) {
             System.err.println("CLI parameter expected");
-            System.err.println("java Publisher <publication URL>");
+            System.err.println("java Publisher <publication URL> <number of events>");
             System.exit(1);
         }
 
