@@ -6,7 +6,7 @@
 
     <groupId>org.ztreamy</groupId>
     <artifactId>ztreamy</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -17,7 +17,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.ztreamy.Event</mainClass>
+                            <mainClass>org.ztreamy.Publisher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
