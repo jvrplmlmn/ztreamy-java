@@ -8,6 +8,14 @@
     <artifactId>ztreamy</artifactId>
     <version>1.1-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.6</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!-- Include a META-INF/MANIFEST.MF file which specifies the main class and the full class path -->
