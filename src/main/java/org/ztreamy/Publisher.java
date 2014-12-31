@@ -1,5 +1,7 @@
 package org.ztreamy;
 
+import org.apache.http.HttpStatus;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -52,7 +54,7 @@ public class Publisher {
             // Publish event
             int result = publisher.publish(event);
             // Process the result
-            if (result == 200) {
+            if (result == HttpStatus.SC_OK) {
                 System.out.println("An event has just been sent to the server");
             } else {
                 System.out.println("The server responded with error " + result);
