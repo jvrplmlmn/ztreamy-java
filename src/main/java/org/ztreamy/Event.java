@@ -45,6 +45,10 @@ public class Event {
         return rfc3339Format.format(new Date());
     }
 
+    /*
+     * A Universally Unique IDentifier (UUID) URN Namespace
+     * http://www.ietf.org/rfc/rfc4122.txt
+     */
     public static String createUUID() {
         return UUID.randomUUID().toString();
     }
