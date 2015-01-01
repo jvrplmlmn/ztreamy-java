@@ -18,6 +18,15 @@ public class Event {
     private Map<String, String> extraHeaders;
 
     private Charset charsetUTF8 = Charset.forName("UTF-8");
+
+    /*
+     * RFC 3339 - Date and Time on the Internet: Timestamps
+     * https://www.ietf.org/rfc/rfc3339.txt
+     * http://www.iso.org/iso/home/standards/iso8601.htm
+     *
+     * TODO: Check if it's worth it using Joda-Time
+     * http://www.joda.org/joda-time/faq.html#iso
+     */
     private static SimpleDateFormat rfc3339Format =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
