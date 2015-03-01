@@ -33,7 +33,17 @@ public class Consumer {
     }
 
     public static void main(String[] args) throws IOException {
-        Consumer consumer = new Consumer(new URL("http://localhost:9000/events/stream"));
+        // Check arguments
+        if (args.length != 1) {
+            System.err.println("CLI parameter expected");
+            System.err.println("java Consumer <consumer URL>");
+            System.exit(1);
+        }
+
+        // Consumer
+        Consumer consumer = new Consumer(new URL(args[0]));
+
+        // Receive events
         consumer.receive_events();
     }
 }
