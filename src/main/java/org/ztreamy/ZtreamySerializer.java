@@ -2,18 +2,21 @@ package org.ztreamy;
 
 public class ZtreamySerializer implements Serializer {
 
+    @Override
     public String contentType() {
         return "application/ztreamy-event";
     }
 
+    @Override
     public byte[] serialize(Event event) {
         return event.serialize();
     }
 
+    @Override
     public byte[] serialize(Event[] events) {
         byte[][] serializations = new byte[events.length][];
         int totalLength = 0;
-        for (int i = 0; i < event.length; i++) {
+        for (int i = 0; i < events.length; i++) {
             serializations[i] = events[i].serialize();
             totalLength += serializations[i].length;
         }
