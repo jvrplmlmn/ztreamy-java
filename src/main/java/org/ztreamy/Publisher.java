@@ -10,9 +10,15 @@ import java.net.URL;
 public class Publisher {
 
     private URL serverURL;
+    private Serializer serializer;
 
     public Publisher(URL serverURL) {
+        this(serverURL, new ZtreamySerializer());
+    }
+
+    public Publisher(URL serverURL, Serializer serializer) {
         this.serverURL = serverURL;
+        this.serializer = serializer;
     }
 
     public int publish(Event[] events) throws IOException{
@@ -21,10 +27,8 @@ public class Publisher {
         con.setRequestProperty("Content-Type", "application/ztreamy-event");
         con.setDoOutput(true);
         OutputStream out = con.getOutputStream();
-        for (Event event: events) {
-            byte[] data = event.serialize();
-            out.write(data);
-        }
+        byte[] data = serializer.serialize(events);
+        out.write(data);
         out.close();
         return con.getResponseCode();
     }
