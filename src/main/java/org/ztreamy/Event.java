@@ -1,10 +1,12 @@
 package org.ztreamy;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ public class Event {
     private String syntax;
     private String timestamp;
     private String applicationId;
-    private byte[] body;
+    private Map<String, Object> body;
     private Map<String, String> extraHeaders;
 
     private Charset charsetUTF8 = Charset.forName("UTF-8");
@@ -31,23 +33,27 @@ public class Event {
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     public Event(String eventId, String sourceId, String syntax,
-                 String applicationId, byte[] body) {
+                 String applicationId, Map<String, Object> body) {
         this.eventId = eventId;
         this.sourceId = sourceId;
         this.syntax = syntax;
         this.applicationId = applicationId;
         this.body = body;
-        this.extraHeaders = new HashMap<String, String>();
+        this.extraHeaders = new LinkedHashMap<String, String>();
         timestamp = createTimestamp();
     }
 
     public Event(String eventId, String sourceId, String syntax,
                  String applicationId) {
-        this(eventId, sourceId, syntax, applicationId, new byte[0]);
+        this(eventId, sourceId, syntax, applicationId, null);
     }
 
     public Event(String sourceId, String syntax, String applicationId) {
         this(createUUID(), sourceId, syntax, applicationId);
+    }
+
+    public void setExtraHeader(String name, String value) {
+        extraHeaders.put(name, value);
     }
 
     public static String createTimestamp() {
@@ -62,12 +68,13 @@ public class Event {
         return UUID.randomUUID().toString();
     }
 
-    public void setBody(byte[] body) {
-        this.body = body;
+    public void setBody(Map<String, Object> bodyAsMap) {
+        this.body = bodyAsMap;
     }
 
     public void setBody(String bodyAsString) {
-        this.body = bodyAsString.getBytes(charsetUTF8);
+        body = new LinkedHashMap<String, Object>();
+        body.put("value", bodyAsString);
     }
 
     public byte[] serialize() {
@@ -82,11 +89,17 @@ public class Event {
         for (Map.Entry<String, String> entry: extraHeaders.entrySet()) {
             serializeHeader(buffer, entry.getKey(), entry.getValue());
         }
-        serializeHeader(buffer, "Body-Length", String.valueOf(body.length));
+        byte[] bodyAsBytes;
+        if (syntax.equals("application/json")) {
+            bodyAsBytes = bodyAsJSON();
+        } else {
+            bodyAsBytes = body.get("value").toString().getBytes(charsetUTF8);
+        }
+        serializeHeader(buffer, "Body-Length", String.valueOf(bodyAsBytes.length));
         // Delimiter of headers and body
         buffer.append("\r\n");
         byte[] headers = buffer.toString().getBytes(charsetUTF8);
-        return concatenate(headers, body);
+        return concatenate(headers, bodyAsBytes);
     }
 
     public static void serializeHeader(StringBuffer buffer, String key, String value) {
@@ -101,6 +114,28 @@ public class Event {
         System.arraycopy(first, 0, dest, 0, first.length);
         System.arraycopy(second, 0, dest, first.length, second.length);
         return dest;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new LinkedHashMap<String, Object>();
+        data.put("Event-Id", eventId);
+        data.put("Source-Id", sourceId);
+        data.put("Syntax", syntax);
+        if (applicationId != null) {
+            data.put("Application-Id", applicationId);
+        }
+        data.putAll(extraHeaders);
+        if (syntax.equals("application/json")) {
+            data.put("Body", body);
+        } else {
+            data.put("Body", body.get("value").toString());
+        }
+        return data;
+    }
+
+    private byte[] bodyAsJSON() {
+        Gson gson = new Gson();
+        return gson.toJson(body).getBytes(charsetUTF8);
     }
 
     public static void main(String[] args) throws IOException {
