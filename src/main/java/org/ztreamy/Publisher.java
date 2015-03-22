@@ -64,9 +64,8 @@ public class Publisher {
         // Publish N events
         int numEvents = Integer.parseInt(args[1]);
         for (int i = 0; i < numEvents; i++) {
-            Event event = new Event(sourceID, "text/plain", "ztreamy-java-test");
             // Publish event
-            int result = publisher.publish(event);
+            int result = publisher.publish(new DemoEvent(sourceID));
             // Process the result
             if (result == HttpStatus.SC_OK) {
                 System.out.println("An event has just been sent to the server");
