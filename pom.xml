@@ -49,7 +49,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency-jars/</classpathPrefix>
-                            <!--<mainClass>org.ztreamy.Consumer</mainClass>-->
+                            <mainClass>org.ztreamy.Publisher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
