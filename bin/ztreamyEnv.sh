@@ -5,4 +5,4 @@ else
   JAVA=java
 fi
 
-CLASSPATH="${ZTREAMYBINDIR}/../target/classes:${CLASSPATH}"
+CLASSPATH="${ZTREAMYBINDIR}/../target/ztreamy.jar:${CLASSPATH}"
