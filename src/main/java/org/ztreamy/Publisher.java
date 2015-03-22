@@ -10,14 +10,24 @@ import java.net.URL;
 public class Publisher {
 
     private URL serverURL;
+    private String logFileName;
     private Serializer serializer;
 
     public Publisher(URL serverURL) {
-        this(serverURL, new ZtreamySerializer());
+        this(serverURL, null, new ZtreamySerializer());
+    }
+
+    public Publisher(URL serverURL, String logFileName) {
+        this(serverURL, logFileName, new ZtreamySerializer());
     }
 
     public Publisher(URL serverURL, Serializer serializer) {
+        this(serverURL, null, serializer);
+    }
+
+    public Publisher(URL serverURL, String logFileName, Serializer serializer) {
         this.serverURL = serverURL;
+        this.logFileName = logFileName;
         this.serializer = serializer;
     }
 

@@ -12,6 +12,10 @@ public class JSONSerializer implements Serializer {
 
     private Gson gson;
 
+    public JSONSerializer() {
+        gson = new Gson();
+    }
+
     private static Charset charsetUTF8 = Charset.forName("UTF-8");
 
 
