@@ -60,6 +60,13 @@
                 <version>2.5.1</version>
                 <executions>
                     <execution>
+                        <id>build-classpath</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals>
